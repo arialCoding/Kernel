@@ -1,0 +1,1 @@
+This branch is the Project that was built alongside the ITE Fall 2024 Project about creating PDF documents using LaTeX. The main branch will continue working on the Kernel creating the main modules and eventually a shell.
