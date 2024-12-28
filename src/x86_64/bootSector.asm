@@ -1,5 +1,5 @@
 [org 0x7C00]
-KERNEL_OFFSET equ 0X1000
+KERNEL_OFFSET equ 0x1000
 
 mov [BOOT_DRIVE], dl
 
@@ -8,8 +8,12 @@ mov sp, bp
 
 mov bx, RM_MSG
 call print
+call print_nl
 
 call kernelLoad
+
+call clear_screen
+
 call switch
 
 jmp $
@@ -36,15 +40,13 @@ kernelLoad:
 [bits 32]
 
 BEGIN_protectedMode:
-    mov ebx, PM_MSG
-    call print32
     call KERNEL_OFFSET
     jmp $
 
 
 RM_MSG db "in real mode", 0
 PM_MSG db "in protected mode", 0
-KL_MSG db "loading kernel . . .", 10, 0
+KL_MSG db "loading kernel . . .", 0
 
 BOOT_DRIVE db 0
 
