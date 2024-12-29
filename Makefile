@@ -9,6 +9,8 @@ ASM_src_DIR = src/x86_64
 
 OBJ = $(addprefix $(obj_DIR)/, $(notdir $(C_SOURCES:.c=.o)))
 
+C_FLAGS = -g -I $(C_src_DIR)/include
+
 build/os-image.bin: $(bin_DIR)/bootSector.bin $(bin_DIR)/kernel.bin
 	cat $(bin_DIR)/bootSector.bin $(bin_DIR)/kernel.bin > build/os-image.bin
 
@@ -24,7 +26,7 @@ debug:
 
 #GENERIC
 $(obj_DIR)/%.o: $(C_src_DIR)/%.c ${C_HEADERS}
-	x86_64-elf-gcc -m32 -ffreestanding -c $< -o $@ -g
+	x86_64-elf-gcc -m32 -ffreestanding -c $< -o $@ $(C_FLAGS)
 
 $(obj_DIR)/%.o: $(ASM_src_DIR)/%.asm
 	nasm $< -f elf -o $@
