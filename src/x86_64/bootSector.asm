@@ -12,8 +12,6 @@ call print_nl
 
 call kernelLoad
 
-call clear_screen
-
 call switch
 
 jmp $
