@@ -14,14 +14,14 @@ int get_offset_col(int offset);
 void clear_screen()
 {
     int screenSize = ROWS*COLS;
-    unsigned char* VGA = (unsigned char*)VIDEO_MEMORY;
+    char* VGA = (char*)VIDEO_MEMORY;
 
     for(int i = 0; i < screenSize; i++)
     {
-        VGA[2*i] = '\0';
+        VGA[2*i] = ' ';
         VGA[2*i + 1] = WHITE_ON_BLACK;
     }
-    set_cursor_offset(0);
+    set_cursor_offset(get_offset(0, 0));
 }
 
 void kprint_at(char *message, int col, int row)
@@ -50,17 +50,13 @@ void kprint(char *message)
 }
 
 
-
-
-
 int get_cursor_offset()
 {
     int pos;
 
     WB_port(REG_SCREEN_CTRL, 14);
-    pos = RB_port(REG_SCREEN_DATA);
+    pos = RB_port(REG_SCREEN_DATA) << 8;
 
-    pos = pos << 8;
 
     WB_port(REG_SCREEN_CTRL, 15);
     pos += RB_port(REG_SCREEN_DATA);
@@ -118,5 +114,5 @@ int get_offset_row(int offset)
 
 int get_offset_col(int offset)
 {
-    return (offset%(COLS*2))/2;
+    return (offset - (get_offset_row(offset)*2*COLS))/2;
 }

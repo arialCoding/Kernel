@@ -30,7 +30,7 @@ kernelLoad:
     call print_nl
 
     mov bx, KERNEL_OFFSET
-    mov dh, 2
+    mov dh, 16
     mov dl, [BOOT_DRIVE]
     call diskLoad
     ret
