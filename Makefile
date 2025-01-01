@@ -5,7 +5,7 @@ bin_DIR = build/bin
 obj_DIR = build/obj
 
 C_src_DIR = src/c
-ASM_src_DIR = src/x86_64
+ASM_src_DIR = src/asm
 
 OBJ = $(addprefix $(obj_DIR)/, $(notdir $(C_SOURCES:.c=.o)))
 
@@ -15,23 +15,22 @@ build/os-image.bin: $(bin_DIR)/bootSector.bin $(bin_DIR)/kernel.bin
 	cat $(bin_DIR)/bootSector.bin $(bin_DIR)/kernel.bin > build/os-image.bin
 
 $(bin_DIR)/kernel.bin: $(obj_DIR)/kernelEntry.o $(OBJ)
-	x86_64-elf-ld -m elf_i386 -o $(bin_DIR)/kernel.bin -T link.lds $(OBJ) $(obj_DIR)/kernelEntry.o --oformat binary
+	i386-elf-ld -o $(bin_DIR)/kernel.bin -T link.lds $(OBJ) $(obj_DIR)/kernelEntry.o --oformat binary
 
 #FOR DEBUGGING
-kernel.elf: $(obj_DIR)/kernelEntry.o $(OBJ)
-	x86_64-elf-ld -m elf_i386 -o build/DBG/kernel.elf -T link.lds $(OBJ) $(obj_DIR)/kernelEntry.o
+build/DBG/kernel.elf: $(obj_DIR)/kernelEntry.o $(OBJ)
+	i386-elf-ld -o build/DBG/kernel.elf -T link.lds $(OBJ) $(obj_DIR)/kernelEntry.o
 
-Drun:
-	qemu-system-x86_64 -gdb tcp::1234 -S -fda build/os-image.bin
+run: os-image.bin
+	qemu-system-i386 -fda build/os-image.bin
 
-run:
-	qemu-system-x86_64 -fda build/os-image.bin
+debug: build/os-image.bin build/DBG/kernel.elf
+	qemu-system-i386 -gdb tcp::1234 -S -fda build/os-image.bin &
+	i386-elf-gdb -ex "target remote localhost:1234" -ex "symbol-file build/DBG/kernel.elf"
 
-debug:
-	gdb -ex "target remote host.docker.internal:1234" -ex "symbol-file build/DBG/kernel.elf"
 #GENERIC
 $(obj_DIR)/%.o: $(C_src_DIR)/%.c ${C_HEADERS}
-	x86_64-elf-gcc -m32 -ffreestanding -c $< -o $@ $(C_FLAGS)
+	i386-elf-gcc -ffreestanding -c $< -o $@ $(C_FLAGS)
 
 $(obj_DIR)/%.o: $(ASM_src_DIR)/%.asm
 	nasm $< -f elf -o $@
