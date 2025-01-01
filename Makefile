@@ -15,11 +15,11 @@ build/os-image.bin: $(bin_DIR)/bootSector.bin $(bin_DIR)/kernel.bin
 	cat $(bin_DIR)/bootSector.bin $(bin_DIR)/kernel.bin > build/os-image.bin
 
 $(bin_DIR)/kernel.bin: $(obj_DIR)/kernelEntry.o $(OBJ)
-	i386-elf-ld -o $(bin_DIR)/kernel.bin -Ttext 0x1000 $(obj_DIR)/kernelEntry.o $(OBJ) --oformat binary
+	i386-elf-ld -o $(bin_DIR)/kernel.bin -T link.lds $(obj_DIR)/kernelEntry.o $(OBJ) --oformat binary
 
 #FOR DEBUGGING
 build/DBG/kernel.elf: $(obj_DIR)/kernelEntry.o $(OBJ)
-	i386-elf-ld -o build/DBG/kernel.elf -Ttext 0x1000 $(obj_DIR)/kernelEntry.o $(OBJ)
+	i386-elf-ld -o build/DBG/kernel.elf -T link.lds $(obj_DIR)/kernelEntry.o $(OBJ)
 
 run: build/os-image.bin
 	qemu-system-i386 -fda build/os-image.bin
