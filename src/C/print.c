@@ -1,6 +1,7 @@
 #include "print.h"
 #include "ports.h"
 
+#include "utils.h"
 
 //**************HELPERS***************//
 int get_cursor_offset();
@@ -70,7 +71,7 @@ void set_cursor_offset(int offset)
     WB_port(REG_SCREEN_CTRL, 14);
     WB_port(REG_SCREEN_DATA, (unsigned char)(offset >> 8));
     WB_port(REG_SCREEN_CTRL, 15);
-    WB_port(REG_SCREEN_CTRL, (unsigned char)(offset & 0xff));
+    WB_port(REG_SCREEN_DATA, (unsigned char)(offset & 0xff));
 }
 
 int print_char(char c, int col, int row, char attr)
@@ -98,6 +99,23 @@ int print_char(char c, int col, int row, char attr)
         VGA[offset+1] = attr;
         offset += 2;
     }
+
+    // SCROLLING:
+    if(offset >= 2*COLS*ROWS)
+    {
+        for(int i = 0; i < ROWS-1; i++)
+        {
+            unsigned char* src = (unsigned char*)(VIDEO_MEMORY + get_offset(0, i+1));
+            unsigned char* dst = (unsigned char*)(VIDEO_MEMORY + get_offset(0, i));
+
+            memory_copy(src, dst, COLS*2);
+        }
+        char* last_line = (char*)(VIDEO_MEMORY + get_offset(0, ROWS-1));
+        for(int i = 0; i < COLS*2; i++) last_line[i] = 0;
+
+        offset -= 2*COLS;
+    }
+
     set_cursor_offset(offset);
     return offset;
 }
