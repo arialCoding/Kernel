@@ -4,10 +4,18 @@
 #include "isr.h"
 #include "idt.h"
 
-void main() {
+#include "timer.h"
+#include "keyboard.h"
+
+void main()
+{
     clear_screen();
     isr_install();
-    /* Test the interrupts */
-    __asm__ __volatile__("int $2");
-    __asm__ __volatile__("int $3");
+
+    asm volatile("sti");
+
+    // init_timer(50);
+    
+
+    init_keyboard();
 }
