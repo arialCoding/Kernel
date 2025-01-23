@@ -2,9 +2,11 @@
 #include "idt.h"
 
 #include "print.h"
-#include "utils.h"
 #include "ports.h"
+#include "string.h"
 
+#include "keyboard.h"
+#include "timer.h"
 
 isr_t interrupt_handlers[256];
 
@@ -147,3 +149,14 @@ void irq_handler(registers_t r)
         handler(r);
     }
 }
+
+void irq_install()
+{
+    asm volatile("sti");
+
+    init_timer(50);
+    
+
+    init_keyboard();
+}
+

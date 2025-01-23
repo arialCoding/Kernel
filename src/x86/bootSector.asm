@@ -16,12 +16,12 @@ call switch
 
 jmp $
 
-%include "src/asm/include/print.asm"
-%include "src/asm/include/printHex.asm"
-%include "src/asm/include/diskLoad.asm"
-%include "src/asm/include/GDT.asm"
-%include "src/asm/include/switch32.asm"
-%include "src/asm/include/print32.asm"
+%include "src/x86/include/print.asm"
+%include "src/x86/include/printHex.asm"
+%include "src/x86/include/diskLoad.asm"
+%include "src/x86/include/GDT.asm"
+%include "src/x86/include/switch32.asm"
+%include "src/x86/include/print32.asm"
 
 [bits 16]
 kernelLoad:

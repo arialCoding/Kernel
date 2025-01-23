@@ -1,16 +1,5 @@
-#include "utils.h"
+#include "string.h"
 
-void memory_copy(unsigned char* src, unsigned char* dst, unsigned int size)
-{
-    for(int i = 0; i < size; i++)
-        dst[i] = src[i];
-}
-
-void memory_set(u8* dst, u8 val, u32 size)
-{
-    for(int i = 0; i < size; i++)
-        dst[i] = val;
-}
 
 void int_to_ascii(int n, char str[])
 {
@@ -46,4 +35,24 @@ void reverse(char str[])
         str[i] = str[size-1 - i];
         str[size-1 - i] = temp;
     }
+}
+
+
+void backspace(char s[]) {
+    int len = strlen(s);
+    s[len-1] = '\0';
+}
+
+void append(char s[], char n) {
+    int len = strlen(s);
+    s[len] = n;
+    s[len+1] = '\0';
+}
+
+int strcmp(char s1[], char s2[]) {
+    int i;
+    for (i = 0; s1[i] == s2[i]; i++) {
+        if (s1[i] == '\0') return 0;
+    }
+    return s1[i] - s2[i];
 }
