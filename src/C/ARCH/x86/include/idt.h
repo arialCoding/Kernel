@@ -1,7 +1,7 @@
 #ifndef IDT_H
 #define IDT_H
 
-#include "types.h"
+#include "type.h"
 
 #define CODE_SEGMENT_OFFSET 0x08
 
