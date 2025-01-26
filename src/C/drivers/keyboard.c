@@ -29,9 +29,9 @@ const char sc_ascii[] = { '?', '?', '1', '2', '3', '4', '5', '6',
         'H', 'J', 'K', 'L', ';', '\'', '`', '?', '\\', 'Z', 'X', 'C', 'V', 
         'B', 'N', 'M', ',', '.', '/', '?', '?', '?', ' '};
 
-static void keyboard_callback(registers_t regs) {
+static void keyboard_callback(registers_t* regs) {
     /* The PIC leaves us the scancode in port 0x60 */
-    u8 scancode = RB_port(0x60);
+    uint8_t scancode = RB_port(0x60);
     
     if (scancode > SC_MAX) return;
     if (scancode == BACKSPACE) {
@@ -56,7 +56,7 @@ void init_keyboard()
    register_interrupt_handler(IRQ1, keyboard_callback); 
 }
 
-// void print_letter(u8 scancode)
+// void print_letter(uint8_t scancode)
 // {
 //     switch (scancode) {
 //         case 0x0:

@@ -11,7 +11,7 @@ INCLUDE_DIRS = -I $(C_src_DIR)/include -I $(C_src_DIR)/libc/include -I $(C_src_D
 
 OBJ = $(addprefix $(obj_DIR)/, $(notdir $(C_SOURCES:.c=.o))) $(addprefix $(obj_DIR)/, $(notdir $(LIBC_SOURCES:.c=.o)))
 
-C_FLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror $(INCLUDE_DIRS) 
+C_FLAGS = -g -m32 -Wall -Wextra -Werror -fno-exceptions $(INCLUDE_DIRS) 
 
 build/os-image.bin: $(bin_DIR)/bootSector.bin $(bin_DIR)/kernel.bin
 	cat $(bin_DIR)/bootSector.bin $(bin_DIR)/kernel.bin > build/os-image.bin
