@@ -4,7 +4,7 @@ C_HEADERS = $(wildcard src/C/include/*.h)
 bin_DIR = build/bin
 obj_DIR = build/obj
 
-C_src_DIR = src/c
+C_src_DIR = src/C
 ASM_src_DIR = src/x86
 
 INCLUDE_DIRS = -I $(C_src_DIR)/include -I $(C_src_DIR)/libc/include -I $(C_src_DIR)/ARCH/x86/include -I $(C_src_DIR)/drivers/include -I $(C_src_DIR)/kernel/include
