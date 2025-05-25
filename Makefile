@@ -27,8 +27,8 @@ run: build/os-image.bin
 	qemu-system-i386 -fda build/os-image.bin
 
 debug: build/os-image.bin build/DBG/kernel.elf
-	qemu-system-i386 -gdb tcp::1234 -S -fda build/os-image.bin &
-	i386-elf-gdb -ex "target remote localhost:1234" -ex "symbol-file build/DBG/kernel.elf"
+	qemu-system-i386 -s -S -fda build/os-image.bin &
+	gdb -ex "target remote localhost:1234" -ex "symbol-file build/DBG/kernel.elf"
 
 #GENERIC
 $(obj_DIR)/%.o: $(C_src_DIR)/%.c ${C_HEADERS}
